@@ -1,0 +1,9 @@
+llm:
+  model: gpt-4o
+  temperature: 0.5
+
+
+embedding_model: text-embedding-3-large
+
+
+agent_name: "Rise-Construction"

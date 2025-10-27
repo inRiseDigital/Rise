@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find:*)",
+      "Bash(dir \"c:\\Users\\laksh\\OneDrive\\Desktop\\rise\" /s /b)",
+      "Bash(findstr:*)",
+      "Bash(powershell:*)",
+      "Bash(dir /s /b \"C:\\Users\\laksh\\OneDrive\\Desktop\\rise\")",
+      "Bash(python -m uvicorn:*)",
+      "Bash(curl:*)",
+      "Bash(dir \"C:\\Users\\laksh\\OneDrive\\Desktop\\rise\\Rise-AI-Backend\" /B)",
+      "Bash(if exist \"Rise-AI-Backend\\.git\" rmdir /s /q \"Rise-AI-Backend\\.git\")",
+      "Bash(if [ -d \".git\" ])",
+      "Bash(then rm -rf .git)",
+      "Bash(else echo \"No nested .git found\")",
+      "Bash(fi)",
+      "Bash(git init:*)",
+      "Bash(git add:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

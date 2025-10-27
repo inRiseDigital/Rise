@@ -1,0 +1,10 @@
+﻿.DS_Store
+Thumbs.db
+*.log
+node_modules/
+.env
+dist/
+build/
+.vscode/
+# Windows reserved device file
+nul
