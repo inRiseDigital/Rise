@@ -15,7 +15,18 @@
       "Bash(else echo \"No nested .git found\")",
       "Bash(fi)",
       "Bash(git init:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git branch:*)",
+      "Bash(git remote add:*)",
+      "Bash(git remote set-url:*)",
+      "Bash(git push:*)",
+      "Bash(npm install:*)",
+      "Bash(npm run build:*)",
+      "Bash(move:*)",
+      "Bash(dir \"C:\\Users\\laksh\\OneDrive\\Desktop\\rise\\Frontend\\public\" /B)",
+      "Bash(npm run dev:*)",
+      "Bash(git reset:*)"
     ],
     "deny": [],
     "ask": []

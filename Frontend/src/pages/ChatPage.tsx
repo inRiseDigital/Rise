@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { sendChatMessage } from '../services/api';
+import GlassSurface from '../components/GlassSurface';
 
 interface Message {
   id: string;
@@ -11,18 +12,26 @@ interface Message {
 
 export default function ChatPage() {
   const navigate = useNavigate();
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: '1',
-      text: 'Hello! How can I help you today?',
-      sender: 'bot',
-      timestamp: new Date(),
-    },
-  ]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [threadId] = useState(() => `thread_${Date.now()}`);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Prevent body scrolling
+    document.body.style.overflow = 'hidden';
+    document.body.style.height = '100vh';
+    document.body.style.position = 'fixed';
+    document.body.style.width = '100%';
+
+    return () => {
+      document.body.style.overflow = '';
+      document.body.style.height = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+    };
+  }, []);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -83,140 +92,276 @@ export default function ChatPage() {
   };
 
   return (
-    <div className="fixed inset-0 w-screen h-screen bg-black flex flex-col overflow-hidden relative">
-      {/* Flowing Wave Background */}
-      <div className="absolute inset-0 w-full h-full">
-        <div
-          className="w-full h-full bg-cover bg-center bg-no-repeat opacity-90"
-          style={{
-            backgroundImage: 'url(/chat-bg.jpg)',
-            filter: 'brightness(0.7) contrast(1.1)'
-          }}
-        />
+    <div className="fixed inset-0 w-screen h-screen bg-black flex flex-col overflow-hidden relative" style={{ overscrollBehavior: 'none' }}>
+      {/* White Glowing Effect - Right Side to Left - Extended Natural Atmospheric Fade */}
+      <div className="absolute top-0 right-0 w-full h-full pointer-events-none overflow-hidden">
+        {/* Extended layered glow effects for smooth, natural fade reaching further left */}
+        <div className="absolute top-[25%] -right-[20%] w-[70%] h-[50%] bg-white/25 blur-[300px] rounded-full"></div>
+        <div className="absolute top-[20%] -right-[18%] w-[65%] h-[60%] bg-white/20 blur-[250px] rounded-full"></div>
+        <div className="absolute top-[30%] -right-[15%] w-[60%] h-[40%] bg-white/30 blur-[220px] rounded-full"></div>
+        <div className="absolute top-[35%] -right-[12%] w-[55%] h-[30%] bg-white/40 blur-[180px] rounded-full"></div>
+        <div className="absolute top-[40%] -right-[8%] w-[50%] h-[20%] bg-white/50 blur-[150px] rounded-full"></div>
+        <div className="absolute top-[42%] -right-[5%] w-[45%] h-[16%] bg-white/55 blur-[120px] rounded-full"></div>
+        <div className="absolute top-[45%] right-[0%] w-[40%] h-[12%] bg-white/45 blur-[100px] rounded-full"></div>
       </div>
 
-      {/* Header - Transparent */}
-      <div className="bg-transparent px-4 sm:px-6 py-4 sm:py-6 md:py-8 flex items-center justify-between relative z-10">
-        <div className="flex items-center gap-2 sm:gap-3 z-10">
-          <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-white/[0.2] via-white/[0.12] to-white/[0.06] backdrop-blur-xl border border-white/[0.25] rounded-full flex items-center justify-center shadow-[0_4px_16px_0_rgba(255,255,255,0.2),inset_0_0_10px_rgba(255,255,255,0.1)]">
+      {/* Header - Close Button Only */}
+      <div className="bg-transparent px-4 sm:px-6 py-4 sm:py-6 md:py-8 flex items-center justify-end relative z-10">
+        <button
+          onClick={() => navigate('/')}
+          className="w-8 h-8 sm:w-10 sm:h-10 z-10"
+          aria-label="Close chat"
+        >
+          <GlassSurface
+            width="100%"
+            height="100%"
+            borderRadius={9999}
+            brightness={55}
+            opacity={0.9}
+            blur={12}
+            displace={0}
+            backgroundOpacity={0.05}
+            saturation={1.2}
+            distortionScale={-180}
+            redOffset={0}
+            greenOffset={10}
+            blueOffset={20}
+            className="!flex !items-center !justify-center !w-full !h-full hover:shadow-[0_8px_24px_0_rgba(255,255,255,0.3)] transition-all duration-300"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth={2}
               stroke="white"
-              className="w-5 h-5 sm:w-6 sm:h-6"
+              className="w-6 h-6"
             >
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z"
+                d="M6 18L18 6M6 6l12 12"
               />
             </svg>
-          </div>
-          <div>
-            <h2 className="text-lg sm:text-xl font-semibold text-white">Rise AI Assistant</h2>
-            <p className="text-xs sm:text-sm text-white/70">Online</p>
-          </div>
-        </div>
-        <button
-          onClick={() => navigate('/')}
-          className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-white/[0.15] via-white/[0.08] to-white/[0.03] backdrop-blur-xl border border-white/[0.18] hover:bg-white/[0.2] transition-all duration-300 flex items-center justify-center z-10 shadow-[0_4px_16px_0_rgba(255,255,255,0.15),inset_0_0_10px_rgba(255,255,255,0.05)]"
-          aria-label="Close chat"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={2}
-            stroke="white"
-            className="w-6 h-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M6 18L18 6M6 6l12 12"
-            />
-          </svg>
+          </GlassSurface>
         </button>
       </div>
 
       {/* Messages Container */}
       <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-4 sm:py-8 relative z-10">
-        {/* Decorative Background Elements */}
-        <div className="absolute top-10 left-10 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-20 right-10 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
-
-        <div className="max-w-4xl mx-auto space-y-3 sm:space-y-4 relative z-10">
-          {messages.map((message) => (
-            <div
-              key={message.id}
-              className={`flex ${
-                message.sender === 'user' ? 'justify-end' : 'justify-start'
-              }`}
+        {messages.length === 0 ? (
+          /* Empty state - center the input */
+          <div className="absolute top-[40%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-3xl px-4 sm:px-6">
+            {/* Rise AI Title - Pure Black, Illuminated by Extended Right Side Glow */}
+            <h1
+              className="text-center text-7xl sm:text-8xl md:text-9xl lg:text-[8rem] xl:text-[9rem] font-bold mb-6 sm:mb-8 text-black"
+              style={{
+                letterSpacing: '0.05em',
+              }}
             >
+              Rise AI
+            </h1>
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="flex-1">
+                <GlassSurface
+                  width="100%"
+                  height="auto"
+                  borderRadius={9999}
+                  brightness={55}
+                  opacity={0.9}
+                  blur={12}
+                  displace={0}
+                  backgroundOpacity={0.05}
+                  saturation={1.2}
+                  distortionScale={-180}
+                  redOffset={0}
+                  greenOffset={10}
+                  blueOffset={20}
+                  className="!px-4 sm:!px-5 !py-2.5 sm:!py-3 focus-within:shadow-[0_4px_20px_0_rgba(255,255,255,0.2)] transition-all duration-300"
+                >
+                  <input
+                    type="text"
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                    onKeyPress={handleKeyPress}
+                    placeholder="Type your message..."
+                    className="w-full text-sm sm:text-base bg-transparent focus:outline-none text-white placeholder-white/50"
+                  />
+                </GlassSurface>
+              </div>
+              <button
+                onClick={handleSend}
+                disabled={inputValue.trim() === '' || isLoading}
+                className="w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0 disabled:cursor-not-allowed disabled:opacity-30 transition-all duration-300"
+                aria-label="Send message"
+              >
+                <GlassSurface
+                  width="100%"
+                  height="100%"
+                  borderRadius={9999}
+                  brightness={55}
+                  opacity={0.9}
+                  blur={12}
+                  displace={0}
+                  backgroundOpacity={0.05}
+                  saturation={1.2}
+                  distortionScale={-180}
+                  redOffset={0}
+                  greenOffset={10}
+                  blueOffset={20}
+                  className="!flex !items-center !justify-center !w-full !h-full hover:shadow-[0_12px_32px_0_rgba(255,255,255,0.3)] transition-all duration-300"
+                >
+                  {isLoading ? (
+                    <svg className="animate-spin h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                  ) : (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={2}
+                      stroke="currentColor"
+                      className="w-6 h-6 text-white"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"
+                      />
+                    </svg>
+                  )}
+                </GlassSurface>
+              </button>
+            </div>
+            <p className="text-center text-white/50 text-xs mt-3">
+              Rise AI can make mistakes. Check important info.
+            </p>
+          </div>
+        ) : (
+          <div className="max-w-4xl mx-auto space-y-3 sm:space-y-4 relative z-10 w-full">
+            {messages.map((message) => (
               <div
-                className={`max-w-[85%] sm:max-w-[70%] rounded-2xl px-4 sm:px-6 py-2 sm:py-3 relative overflow-hidden ${
-                  message.sender === 'user'
-                    ? 'bg-gradient-to-br from-white/[0.18] via-white/[0.12] to-white/[0.06] backdrop-blur-3xl border border-white/[0.22] shadow-[0_8px_32px_0_rgba(255,255,255,0.2),0_0_0_1px_rgba(255,255,255,0.15),inset_0_0_15px_rgba(255,255,255,0.08)] before:absolute before:inset-0 before:rounded-2xl before:bg-gradient-to-br before:from-white/25 before:via-transparent before:to-transparent before:opacity-60 before:-z-10'
-                    : 'bg-gradient-to-br from-white/[0.12] via-white/[0.06] to-white/[0.03] backdrop-blur-3xl border border-white/[0.15] shadow-[0_8px_32px_0_rgba(0,0,0,0.4),0_0_0_1px_rgba(255,255,255,0.1),inset_0_0_15px_rgba(255,255,255,0.05)] before:absolute before:inset-0 before:rounded-2xl before:bg-gradient-to-br before:from-white/15 before:via-transparent before:to-transparent before:opacity-50 before:-z-10'
+                key={message.id}
+                className={`flex ${
+                  message.sender === 'user' ? 'justify-end' : 'justify-start'
                 }`}
               >
-                <p className="text-sm sm:text-base text-white relative z-10">{message.text}</p>
-                <p className="text-xs mt-1 text-white/60 relative z-10">
-                  {message.timestamp.toLocaleTimeString([], {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  })}
-                </p>
+                <div className="max-w-[85%] sm:max-w-[70%]">
+                  <GlassSurface
+                    width="100%"
+                    height="auto"
+                    borderRadius={16}
+                    brightness={message.sender === 'user' ? 58 : 52}
+                    opacity={0.9}
+                    blur={12}
+                    displace={0}
+                    backgroundOpacity={message.sender === 'user' ? 0.08 : 0.04}
+                    saturation={1.2}
+                    distortionScale={-180}
+                    redOffset={0}
+                    greenOffset={10}
+                    blueOffset={20}
+                    className="!px-4 sm:!px-6 !py-2 sm:!py-3"
+                  >
+                    <p className="text-sm sm:text-base text-white">{message.text}</p>
+                    <p className="text-xs mt-1 text-white/60">
+                      {message.timestamp.toLocaleTimeString([], {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      })}
+                    </p>
+                  </GlassSurface>
+                </div>
               </div>
-            </div>
-          ))}
-          <div ref={messagesEndRef} />
-        </div>
+            ))}
+            <div ref={messagesEndRef} />
+          </div>
+        )}
       </div>
 
-      {/* Input Area - Transparent */}
-      <div className="bg-transparent px-4 sm:px-6 py-4 sm:py-6 md:py-8 relative z-10">
-        <div className="max-w-4xl mx-auto flex gap-2 sm:gap-3 relative z-10">
-          <input
-            type="text"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            onKeyPress={handleKeyPress}
-            placeholder="Type your message..."
-            className="flex-1 px-3 sm:px-4 py-3 sm:py-4 md:py-5 text-sm sm:text-base bg-transparent backdrop-blur-xl border border-white/[0.2] rounded-full focus:outline-none focus:border-white/[0.35] focus:shadow-[0_4px_20px_0_rgba(255,255,255,0.2),inset_0_0_15px_rgba(255,255,255,0.08)] transition-all duration-300 text-white placeholder-white/50 shadow-[0_4px_16px_0_rgba(0,0,0,0.3),inset_0_0_10px_rgba(255,255,255,0.05)]"
-          />
+      {/* Input Area - Only shown when there are messages */}
+      {messages.length > 0 && (
+        <div className="bg-transparent px-4 sm:px-6 py-4 sm:py-6 md:py-8 relative z-10">
+          <div className="max-w-3xl mx-auto flex items-center gap-2 sm:gap-3 relative z-10">
+          <div className="flex-1">
+            <GlassSurface
+              width="100%"
+              height="auto"
+              borderRadius={9999}
+              brightness={55}
+              opacity={0.9}
+              blur={12}
+              displace={0}
+              backgroundOpacity={0.05}
+              saturation={1.2}
+              distortionScale={-180}
+              redOffset={0}
+              greenOffset={10}
+              blueOffset={20}
+              className="!px-4 sm:!px-5 !py-3 sm:!py-3.5 focus-within:shadow-[0_4px_20px_0_rgba(255,255,255,0.2)] transition-all duration-300"
+            >
+              <input
+                type="text"
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+                onKeyPress={handleKeyPress}
+                placeholder="Type your message..."
+                className="w-full text-sm sm:text-base bg-transparent focus:outline-none text-white placeholder-white/50"
+              />
+            </GlassSurface>
+          </div>
           <button
             onClick={handleSend}
             disabled={inputValue.trim() === '' || isLoading}
-            className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-white/[0.25] via-white/[0.15] to-white/[0.08] backdrop-blur-xl border border-white/[0.25] text-white rounded-full hover:from-white/[0.35] hover:via-white/[0.25] hover:to-white/[0.15] disabled:from-white/[0.05] disabled:via-white/[0.03] disabled:to-white/[0.01] disabled:cursor-not-allowed disabled:text-white/30 transition-all duration-300 flex items-center justify-center flex-shrink-0 shadow-[0_8px_24px_0_rgba(255,255,255,0.2),0_0_0_1px_rgba(255,255,255,0.15),inset_0_0_15px_rgba(255,255,255,0.08)] hover:shadow-[0_12px_32px_0_rgba(255,255,255,0.3),0_0_0_1px_rgba(255,255,255,0.2)] relative overflow-hidden before:absolute before:inset-0 before:rounded-full before:bg-gradient-to-br before:from-white/30 before:via-transparent before:to-transparent before:opacity-60 before:-z-10"
+            className="w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0 disabled:cursor-not-allowed disabled:opacity-30 transition-all duration-300"
             aria-label="Send message"
           >
-            {isLoading ? (
-              <svg className="animate-spin h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-              </svg>
-            ) : (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={2}
-                stroke="currentColor"
-                className="w-6 h-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"
-                />
-              </svg>
-            )}
+            <GlassSurface
+              width="100%"
+              height="100%"
+              borderRadius={9999}
+              brightness={55}
+              opacity={0.9}
+              blur={12}
+              displace={0}
+              backgroundOpacity={0.05}
+              saturation={1.2}
+              distortionScale={-180}
+              redOffset={0}
+              greenOffset={10}
+              blueOffset={20}
+              className="!flex !items-center !justify-center !w-full !h-full hover:shadow-[0_12px_32px_0_rgba(255,255,255,0.3)] transition-all duration-300"
+            >
+              {isLoading ? (
+                <svg className="animate-spin h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+              ) : (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={2}
+                  stroke="currentColor"
+                  className="w-6 h-6 text-white"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"
+                  />
+                </svg>
+              )}
+            </GlassSurface>
           </button>
         </div>
-      </div>
+        <p className="text-center text-white/50 text-xs mt-3">
+          Rise AI can make mistakes. Check important info.
+        </p>
+        </div>
+      )}
     </div>
   );
 }

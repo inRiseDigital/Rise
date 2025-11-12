@@ -3,6 +3,9 @@
 body, html {
   overflow-x: hidden;
   max-width: 100%;
+  background-color: #000000;
+  margin: 0;
+  padding: 0;
 }
 
 @keyframes fade-in-down {

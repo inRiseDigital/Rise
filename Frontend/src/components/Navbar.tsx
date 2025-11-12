@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import GlassSurface from './GlassSurface';
 
 interface NavbarProps {
   activeSection?: string;
@@ -7,7 +8,7 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ activeSection = 'home' }) => {
   const [isInHomeSection, setIsInHomeSection] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isOverLightBg, setIsOverLightBg] = useState(false);
+  const isOverLightBg = false; // Keep as constant for now
 
   useEffect(() => {
     let wheelCount = 0;
@@ -53,7 +54,22 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection = 'home' }) => {
 
   return (
     <nav className={`fixed top-2 sm:top-4 left-1/2 -translate-x-1/2 z-50 transition-all duration-300 animate-slide-down-navbar ${isInHomeSection ? 'w-[95%] sm:w-[98%] max-w-7xl' : 'w-[90%] sm:w-[70%] lg:w-[60%] xl:w-[53%] max-w-3xl'}`}>
-      <div className="bg-gradient-to-br from-white/[0.15] via-white/[0.08] to-white/[0.03] backdrop-blur-3xl shadow-[0_8px_32px_0_rgba(31,38,135,0.37),0_0_0_1px_rgba(255,255,255,0.1),inset_0_0_20px_rgba(255,255,255,0.05),inset_0_1px_0_0_rgba(255,255,255,0.2)] rounded-3xl border border-white/[0.18] px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 py-2 flex items-center justify-between relative overflow-hidden before:absolute before:inset-0 before:rounded-3xl before:bg-gradient-to-br before:from-white/20 before:via-transparent before:to-transparent before:opacity-50 before:-z-10 after:absolute after:top-0 after:left-[-100%] after:w-full after:h-full after:bg-gradient-to-r after:from-transparent after:via-white/[0.15] after:to-transparent after:animate-shimmer hover:shadow-[0_8px_40px_0_rgba(31,38,135,0.5),0_0_0_1px_rgba(255,255,255,0.15),inset_0_0_30px_rgba(255,255,255,0.08)] transition-all duration-500">
+      <GlassSurface
+        width="100%"
+        height="auto"
+        borderRadius={24}
+        brightness={55}
+        opacity={0.9}
+        blur={12}
+        displace={0}
+        backgroundOpacity={0.05}
+        saturation={1.2}
+        distortionScale={-180}
+        redOffset={0}
+        greenOffset={10}
+        blueOffset={20}
+        className="!px-4 sm:!px-6 md:!px-8 lg:!px-10 xl:!px-12 !py-2 !flex !items-center !justify-between relative overflow-hidden hover:shadow-[0_8px_40px_0_rgba(31,38,135,0.5)] transition-all duration-500"
+      >
         {/* Logo on the left */}
         <div className="flex items-center z-10">
           <img
@@ -75,27 +91,39 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection = 'home' }) => {
         </button>
 
         {/* Navigation buttons - Large Desktop Only */}
-        <div className="hidden xl:flex absolute left-1/2 -translate-x-1/2 items-center gap-4 lg:gap-6">
+        <div className="hidden xl:flex absolute left-1/2 -translate-x-1/2 items-center gap-1">
           <button
             onClick={() => scrollToSection('home')}
-            className={`font-medium transition-all px-3 lg:px-4 py-2 rounded-full text-sm lg:text-base ${
+            className={`font-medium transition-all px-2 xl:px-3 py-2 rounded-full text-sm border ${
               activeSection === 'home'
-                ? 'bg-black text-white'
+                ? 'bg-white/20 text-white border-white/40 shadow-lg backdrop-blur-md'
                 : isOverLightBg
-                ? 'text-black hover:text-gray-700'
-                : 'text-white hover:text-gray-200'
+                ? 'text-black hover:bg-white/10 hover:backdrop-blur-md hover:border-black/30 border-transparent'
+                : 'text-white hover:bg-white/10 hover:backdrop-blur-md hover:border-white/30 border-transparent'
             }`}
           >
             Home
           </button>
           <button
-            onClick={() => scrollToSection('services')}
-            className={`font-medium transition-all px-3 lg:px-4 py-2 rounded-full text-sm lg:text-base ${
-              activeSection === 'services'
-                ? 'bg-black text-white'
+            onClick={() => scrollToSection('about')}
+            className={`font-medium transition-all px-2 xl:px-3 py-2 rounded-full text-sm border ${
+              activeSection === 'about'
+                ? 'bg-white/20 text-white border-white/40 shadow-lg backdrop-blur-md'
                 : isOverLightBg
-                ? 'text-black hover:text-gray-700'
-                : 'text-white hover:text-gray-200'
+                ? 'text-black hover:bg-white/10 hover:backdrop-blur-md hover:border-black/30 border-transparent'
+                : 'text-white hover:bg-white/10 hover:backdrop-blur-md hover:border-white/30 border-transparent'
+            }`}
+          >
+            About Us
+          </button>
+          <button
+            onClick={() => scrollToSection('services')}
+            className={`font-medium transition-all px-2 xl:px-3 py-2 rounded-full text-sm border ${
+              activeSection === 'services'
+                ? 'bg-white/20 text-white border-white/40 shadow-lg backdrop-blur-md'
+                : isOverLightBg
+                ? 'text-black hover:bg-white/10 hover:backdrop-blur-md hover:border-black/30 border-transparent'
+                : 'text-white hover:bg-white/10 hover:backdrop-blur-md hover:border-white/30 border-transparent'
             }`}
           >
             Services
@@ -106,60 +134,89 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection = 'home' }) => {
         <div className="hidden xl:flex items-center">
           <button
             onClick={() => scrollToSection('contact')}
-            className={`font-medium transition-all px-4 lg:px-6 py-2 rounded-full text-sm lg:text-base ${
+            className={`font-medium transition-all px-3 xl:px-5 py-2 rounded-full text-sm border ${
               activeSection === 'contact'
-                ? 'bg-black text-white border border-white/40'
+                ? 'bg-white/20 text-white border-white/40 shadow-lg backdrop-blur-md'
                 : isOverLightBg
-                ? 'bg-white/30 text-black hover:bg-white/40 backdrop-blur-sm border border-black/40'
-                : 'bg-white/30 text-white hover:bg-white/40 backdrop-blur-sm border border-white/40'
+                ? 'bg-white/10 text-black hover:bg-white/20 hover:backdrop-blur-md hover:border-black/30 border-black/20'
+                : 'bg-white/10 text-white hover:bg-white/20 hover:backdrop-blur-md hover:border-white/30 border-white/20'
             }`}
           >
             Get Your Service
           </button>
         </div>
-      </div>
+      </GlassSurface>
 
       {/* Mobile, Tablet, Foldable & Nest Hub Menu Dropdown */}
       {isMobileMenuOpen && (
-        <div className="xl:hidden absolute top-full left-0 right-0 mt-2 bg-gradient-to-br from-white/[0.15] via-white/[0.08] to-white/[0.03] backdrop-blur-3xl rounded-3xl border border-white/[0.18] shadow-[0_8px_32px_0_rgba(31,38,135,0.37),0_0_0_1px_rgba(255,255,255,0.1),inset_0_0_20px_rgba(255,255,255,0.05),inset_0_1px_0_0_rgba(255,255,255,0.2)] overflow-hidden relative before:absolute before:inset-0 before:rounded-3xl before:bg-gradient-to-br before:from-white/20 before:via-transparent before:to-transparent before:opacity-50 before:-z-10 after:absolute after:top-0 after:left-[-100%] after:w-full after:h-full after:bg-gradient-to-r after:from-transparent after:via-white/[0.15] after:to-transparent after:animate-shimmer">
-          <div className="flex flex-col">
+        <div className="xl:hidden absolute top-full left-0 right-0 mt-2">
+          <GlassSurface
+            width="100%"
+            height="auto"
+            borderRadius={24}
+            brightness={55}
+            opacity={0.9}
+            blur={12}
+            displace={0}
+            backgroundOpacity={0.05}
+            saturation={1.2}
+            distortionScale={-180}
+            redOffset={0}
+            greenOffset={10}
+            blueOffset={20}
+            className="overflow-hidden"
+          >
+            <div className="flex flex-col">
             <button
               onClick={() => scrollToSection('home')}
-              className={`font-medium transition-all px-6 py-3 text-left ${
+              className={`font-medium transition-all px-6 py-3 text-left border-l-4 ${
                 activeSection === 'home'
-                  ? 'bg-black text-white'
+                  ? 'bg-white/20 text-white border-white/60 backdrop-blur-md'
                   : isOverLightBg
-                  ? 'text-black hover:bg-white/20'
-                  : 'text-white hover:bg-white/20'
+                  ? 'text-black hover:bg-white/10 hover:backdrop-blur-md hover:border-black/30 border-transparent'
+                  : 'text-white hover:bg-white/10 hover:backdrop-blur-md hover:border-white/30 border-transparent'
               }`}
             >
               Home
             </button>
             <button
-              onClick={() => scrollToSection('services')}
-              className={`font-medium transition-all px-6 py-3 text-left ${
-                activeSection === 'services'
-                  ? 'bg-black text-white'
+              onClick={() => scrollToSection('about')}
+              className={`font-medium transition-all px-6 py-3 text-left border-l-4 ${
+                activeSection === 'about'
+                  ? 'bg-white/20 text-white border-white/60 backdrop-blur-md'
                   : isOverLightBg
-                  ? 'text-black hover:bg-white/20'
-                  : 'text-white hover:bg-white/20'
+                  ? 'text-black hover:bg-white/10 hover:backdrop-blur-md hover:border-black/30 border-transparent'
+                  : 'text-white hover:bg-white/10 hover:backdrop-blur-md hover:border-white/30 border-transparent'
+              }`}
+            >
+              About Us
+            </button>
+            <button
+              onClick={() => scrollToSection('services')}
+              className={`font-medium transition-all px-6 py-3 text-left border-l-4 ${
+                activeSection === 'services'
+                  ? 'bg-white/20 text-white border-white/60 backdrop-blur-md'
+                  : isOverLightBg
+                  ? 'text-black hover:bg-white/10 hover:backdrop-blur-md hover:border-black/30 border-transparent'
+                  : 'text-white hover:bg-white/10 hover:backdrop-blur-md hover:border-white/30 border-transparent'
               }`}
             >
               Services
             </button>
             <button
               onClick={() => scrollToSection('contact')}
-              className={`font-medium transition-all px-6 py-3 text-left ${
+              className={`font-medium transition-all px-6 py-3 text-left border-l-4 ${
                 activeSection === 'contact'
-                  ? 'bg-black text-white'
+                  ? 'bg-white/20 text-white border-white/60 backdrop-blur-md'
                   : isOverLightBg
-                  ? 'text-black hover:bg-white/20'
-                  : 'text-white hover:bg-white/20'
+                  ? 'text-black hover:bg-white/10 hover:backdrop-blur-md hover:border-black/30 border-transparent'
+                  : 'text-white hover:bg-white/10 hover:backdrop-blur-md hover:border-white/30 border-transparent'
               }`}
             >
               Get Your Service
             </button>
           </div>
+          </GlassSurface>
         </div>
       )}
     </nav>
